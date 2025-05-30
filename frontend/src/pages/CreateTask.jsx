@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { taskService } from '../services/api';
+import { toast } from '../utils/toast';
 
 export default function CreateTask() {
   const [input, setInput] = useState('');
@@ -31,7 +32,7 @@ export default function CreateTask() {
 
     try {
       await taskService.createTaskFromNaturalLanguage(input);
-      
+      toast.success('Task created successfully!');
       // Redirect to tasks list
       navigate('/tasks');
     } catch (err) {

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PlusIcon, TrashIcon, PencilIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { taskService } from '../services/api';
 import ConfirmationDialog from '../components/ConfirmationDialog';
+import { toast } from '../utils/toast';
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -25,6 +26,8 @@ export default function TaskList() {
     fetchTasks();
   }, []);
 
+  const navigate = useNavigate();
+
   const handleDeleteClick = (task) => {
     setTaskToDelete(task);
   };
@@ -36,14 +39,36 @@ export default function TaskList() {
       await taskService.deleteTask(taskToDelete.id);
       setTasks(tasks.filter(task => task.id !== taskToDelete.id));
       setTaskToDelete(null);
+      toast.success('Task deleted successfully!');
     } catch (error) {
       console.error('Error deleting task:', error);
-      alert('Failed to delete task. Please try again.');
+      toast.error('Failed to delete task. Please try again.');
     }
   };
 
   const cancelDelete = () => {
     setTaskToDelete(null);
+  };
+
+  const handleTaskStatusUpdate = async (taskId, newStatus) => {
+    try {
+      const updatedTask = tasks.find(t => t.id === taskId);
+      if (!updatedTask) return;
+      
+      await taskService.updateTask(taskId, {
+        ...updatedTask,
+        status: newStatus
+      });
+      
+      setTasks(tasks.map(task => 
+        task.id === taskId ? { ...task, status: newStatus } : task
+      ));
+      
+      toast.success(`Task marked as ${newStatus.toLowerCase().replace('_', ' ')}`);
+    } catch (error) {
+      console.error('Error updating task status:', error);
+      toast.error('Failed to update task status. Please try again.');
+    }
   };
 
   const getPriorityBadge = (priority) => {

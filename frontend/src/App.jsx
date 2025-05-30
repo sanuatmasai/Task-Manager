@@ -2,6 +2,9 @@ import { Routes, Route, Link, NavLink } from 'react-router-dom';
 import { HomeIcon, PlusIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import './App.css';
 
+// Components
+import ToastProvider from './components/ToastProvider';
+
 // Pages
 import LandingPage from './pages/LandingPage';
 import TaskList from './pages/TaskList';
@@ -12,6 +15,7 @@ import EditTask from './pages/EditTask';
 function App() {
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-50">
+      <ToastProvider />
       {/* Navigation */}
       <nav className="bg-white shadow-sm w-full">
         <div className="w-full px-4">
