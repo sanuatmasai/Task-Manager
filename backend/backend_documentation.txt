@@ -1,0 +1,196 @@
+# Natural Language Task Manager - Backend Documentation
+
+## Table of Contents
+1. System Architecture
+2. Technology Stack
+3. Database Design
+4. API Endpoints
+5. Core Components
+6. Setup Instructions
+7. Security Considerations
+8. Future Enhancements
+
+## 1. System Architecture
+
+The backend follows a standard 3-tier architecture:
+- **Presentation Layer**: RESTful APIs exposed via Spring Web MVC
+- **Service Layer**: Business logic and service implementations
+- **Data Access Layer**: JPA/Hibernate with PostgreSQL database
+
+## 2. Technology Stack
+
+- **Framework**: Spring Boot 3.x
+- **Language**: Java 17+
+- **Build Tool**: Maven
+- **Database**: PostgreSQL
+- **API Documentation**: SpringDoc OpenAPI 3.0
+- **Testing**: JUnit 5, Mockito
+- **Logging**: SLF4J with Logback
+- **NLP**: Natty Date Parser for date extraction
+
+## 3. Database Design
+
+### Tasks Table
+- `id` (BIGSERIAL, PRIMARY KEY)
+- `title` (VARCHAR(500), NOT NULL)
+- `description` (TEXT)
+- `assignee_name` (VARCHAR)
+- `due_date` (TIMESTAMP)
+- `priority` (VARCHAR(2), default 'P3')
+- `status` (VARCHAR(20), default 'PENDING')
+- `created_at` (TIMESTAMP, NOT NULL)
+- `updated_at` (TIMESTAMP, NOT NULL)
+
+## 4. API Endpoints
+
+### Task Management
+- `POST /api/tasks` - Create a new task
+- `POST /api/tasks/parse` - Create task from natural language input
+- `GET /api/tasks` - Get all tasks
+- `GET /api/tasks/{id}` - Get task by ID
+- `PUT /api/tasks/{id}` - Update a task
+- `DELETE /api/tasks/{id}` - Delete a task
+- `GET /api/tasks/status/{status}` - Get tasks by status
+- `GET /api/tasks/assignee/{assigneeName}` - Get tasks by assignee
+- `GET /api/tasks/priority/{priority}` - Get tasks by priority
+
+### API Documentation
+- `GET /api-docs` - OpenAPI documentation (JSON)
+- `GET /swagger-ui.html` - Interactive API documentation
+
+## 5. Core Components
+
+### 1. Task Management
+- CRUD operations for tasks
+- Natural language processing for task creation
+- Task filtering by status, assignee, and priority
+
+### 2. Natural Language Processing
+- Extracts task details from natural language input using pattern matching
+- Identifies:
+  - Task title/description
+  - Assignee name (after keywords like "to", "for", "assign to")
+  - Due date and time (using Natty date parser)
+  - Priority level (P1-P4, default P3)
+
+### 3. Exception Handling
+- Global exception handling with meaningful error messages
+- Validation for request payloads using Bean Validation
+- Custom exceptions for business logic
+
+## 6. Setup Instructions
+
+### Prerequisites
+- Java 17 or higher
+- Maven 3.6 or higher
+- PostgreSQL 12 or higher
+
+### Configuration
+1. Create a PostgreSQL database named `taskdb`
+2. Update database credentials in `application.properties` if needed:
+   ```properties
+   spring.datasource.url=jdbc:postgresql://localhost:5432/taskdb
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   ```
+
+### Running the Application
+1. Build the application:
+   ```bash
+   mvn clean install
+   ```
+2. Run the application:
+   ```bash
+   mvn spring-boot:run
+   ```
+3. Access the API at `http://localhost:8081`
+4. Access Swagger UI at `http://localhost:8081/swagger-ui.html`
+
+## 7. Security Considerations
+- Input validation for all API endpoints using Bean Validation
+- SQL injection prevention using JPA/Hibernate
+- CORS configuration for frontend access (http://localhost:3000)
+- Proper error handling with meaningful error messages
+- Request validation and sanitization
+
+## 8. Future Enhancements
+1. User authentication and authorization
+2. Task categories and tags
+3. Task dependencies and relationships
+4. Recurring tasks
+5. File attachments
+6. Task comments and activity log
+7. Email notifications
+8. Advanced search functionality
+9. Task templates
+10. Reporting and analytics
+
+### 1. Natural Language Parser
+- Extracts task details from natural language input
+- Uses NLP techniques to identify:
+  - Task title/description
+  - Assignee (by name or email)
+  - Due date and time
+  - Priority level (P1-P4, default P3)
+
+### 2. Task Management Service
+- Handles CRUD operations for tasks
+- Implements business logic for task assignment and scheduling
+- Validates task data and permissions
+
+### 3. User Service
+- Manages user authentication and authorization
+- Handles user profile management
+- Manages task assignments
+
+### 4. Notification Service
+- Sends email notifications for:
+  - Task assignments
+  - Due date reminders
+  - Status updates
+
+## 6. Setup Instructions
+
+### Prerequisites
+- Java 17 or higher
+- Maven 3.8+
+- PostgreSQL 15+
+- Node.js 16+ (for frontend)
+
+### Installation
+1. Clone the repository
+2. Configure database connection in `application.yml`
+3. Run database migrations:
+   ```bash
+   mvn liquibase:update
+   ```
+4. Build the application:
+   ```bash
+   mvn clean install
+   ```
+5. Run the application:
+   ```bash
+   java -jar target/task-manager-1.0.0.jar
+   ```
+
+## 7. Security Considerations
+- JWT-based authentication
+- Password hashing with BCrypt
+- CSRF protection
+- Input validation
+- Rate limiting
+- CORS configuration
+- SQL injection prevention
+- XSS protection
+
+## 8. Future Enhancements
+1. Task categories and tags
+2. Task dependencies
+3. Recurring tasks
+4. File attachments
+5. Task comments and activity log
+6. Advanced search and filtering
+7. Task templates
+8. Integration with calendar services
+9. Mobile app support
+10. Advanced analytics and reporting
