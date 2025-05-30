@@ -199,7 +199,7 @@ export default function TaskDetail() {
                 Assignee
               </h3>
               <p className="text-gray-900 font-medium">
-                {task.assigneeName || 'Unassigned'}
+                {task.assignee || 'Unassigned'}
               </p>
             </div>
 

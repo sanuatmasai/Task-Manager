@@ -1,7 +1,9 @@
 package com.taskmanager.controller;
 
+import com.taskmanager.dto.MeetingMinutesRequest;
 import com.taskmanager.dto.TaskRequest;
 import com.taskmanager.dto.TaskResponse;
+import com.taskmanager.service.GeminiService;
 import com.taskmanager.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,6 +28,7 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final GeminiService geminiService;
 
     @Operation(summary = "Create a new task", description = "Creates a new task with the provided details")
     @ApiResponses(value = {
@@ -58,13 +61,34 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all tasks", description = "Retrieves a list of all tasks")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of tasks",
-                content = @Content(schema = @Schema(implementation = TaskResponse.class, type = "array")))
+    @Operation(summary = "Parse meeting minutes and extract tasks", 
+               description = "Extracts tasks from meeting minutes using AI")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Tasks extracted successfully",
+                   content = @Content(schema = @Schema(implementation = TaskResponse[].class))),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
+    @PostMapping(value = "/meeting-minutes", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TaskResponse>> parseMeetingMinutes(
+            @Parameter(description = "Meeting minutes text", required = true)
+            @Valid @RequestBody MeetingMinutesRequest request) {
+        List<TaskRequest> taskRequests = geminiService.parseMeetingMinutes(request.getTranscript());
+        List<TaskResponse> responses = taskRequests.stream()
+            .map(taskService::createTask)
+            .toList();
+        return ResponseEntity.ok(responses);
+    }
+
+    @Operation(summary = "Get all tasks with pagination and search", description = "Retrieves a paginated list of tasks with optional search")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved paginated list of tasks")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TaskResponse>> getAllTasks() {
-        List<TaskResponse> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok(tasks);
+    public ResponseEntity<Map<String, Object>> getAllTasks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search) {
+        
+        Map<String, Object> response = taskService.getAllTasks(page, size, search);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Get task by ID", description = "Retrieves a specific task by its ID")

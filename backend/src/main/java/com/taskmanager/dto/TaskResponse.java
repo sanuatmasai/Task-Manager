@@ -19,7 +19,7 @@ public class TaskResponse {
     private String description;
     
     @Schema(description = "Name of the person assigned to the task", example = "John Doe")
-    private String assigneeName;
+    private String assignee;
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @Schema(description = "Due date and time of the task", example = "2025-06-30 17:00")
@@ -44,7 +44,7 @@ public class TaskResponse {
         response.setId(task.getId());
         response.setTitle(task.getTitle());
         response.setDescription(task.getDescription());
-        response.setAssigneeName(task.getAssigneeName());
+        response.setAssignee(task.getAssignee());
         response.setDueDate(task.getDueDate());
         response.setPriority(task.getPriority());
         response.setStatus(task.getStatus());

@@ -31,7 +31,7 @@ public class NLParserService {
         // Extract assignee
         String assignee = extractAssignee(description);
         if (assignee != null) {
-            taskRequest.setAssigneeName(assignee);
+            taskRequest.setAssignee(assignee);
             // Remove assignee from description
             description = description.replaceAll(
                 "(?:to|for|assign to|assigned to|@)\\s*" + Pattern.quote(assignee), 

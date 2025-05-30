@@ -18,8 +18,8 @@ public class Task {
     @Column(columnDefinition = "TEXT")
     private String description;
     
-    @Column(name = "assignee_name")
-    private String assigneeName;
+    @Column(name = "assignee")
+    private String assignee;
     
     @Column(name = "due_date")
     private LocalDateTime dueDate;

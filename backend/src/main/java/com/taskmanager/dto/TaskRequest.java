@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 @Data
 @Schema(description = "Request object for creating or updating a task")
 public class TaskRequest {
-    @NotBlank(message = "Task description is required")
-    @Schema(description = "Description of the task", example = "Complete project documentation", required = true)
-    private String description;
-
+    @Schema(description = "Title of the task", example = "Complete project documentation", required = true)
     private String title;
     
+    @Schema(description = "Description of the task", example = "Complete the landing page with responsive design", required = false)
+    private String description;
+    
     @Schema(description = "Name of the person assigned to the task", example = "John Doe", required = false)
-    private String assigneeName;
+    private String assignee; // Changed from assigneeName to match frontend JSON
     
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @Schema(description = "Due date and time of the task (format: yyyy-MM-dd HH:mm)", 

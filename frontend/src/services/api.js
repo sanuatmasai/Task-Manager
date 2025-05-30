@@ -10,13 +10,38 @@ const apiClient = axios.create({
 });
 
 export const taskService = {
-  // Get all tasks
-  getAllTasks: async () => {
+  // Get all tasks with pagination and search
+  getAllTasks: async (page = 0, size = 10, search = '') => {
     try {
-      const response = await apiClient.get('/tasks');
+      console.log('Calling API with:', { page, size, search });
+      const params = new URLSearchParams({
+        page: page.toString(),
+        size: size.toString(),
+        ...(search && { search })
+      });
+      const url = `/tasks?${params.toString()}`;
+      console.log('API URL:', url);
+      
+      const response = await apiClient.get(url);
+      console.log('API Response:', response);
+      
+      if (!response.data) {
+        console.error('No data in response:', response);
+        throw new Error('No data received from server');
+      }
+      
       return response.data;
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      console.error('Error in getAllTasks:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        config: {
+          url: error.config?.url,
+          method: error.config?.method,
+          params: error.config?.params
+        }
+      });
       throw error;
     }
   },
@@ -50,6 +75,17 @@ export const taskService = {
       return response.data;
     } catch (error) {
       console.error('Error creating task from natural language:', error);
+      throw error;
+    }
+  },
+
+  // Parse meeting minutes and create tasks
+  parseMeetingMinutes: async (transcript) => {
+    try {
+      const response = await apiClient.post('/tasks/meeting-minutes', { transcript });
+      return response.data;
+    } catch (error) {
+      console.error('Error parsing meeting minutes:', error);
       throw error;
     }
   },

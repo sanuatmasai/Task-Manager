@@ -34,10 +34,37 @@ public class TaskService {
     }
     
     @Transactional(readOnly = true)
-    public List<TaskResponse> getAllTasks() {
-        return taskRepository.findAll().stream()
+    public Map<String, Object> getAllTasks(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("dueDate").ascending());
+        
+        Specification<Task> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            
+            if (search != null && !search.trim().isEmpty()) {
+                String searchTerm = "%" + search.toLowerCase() + "%";
+                Predicate titlePredicate = criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("title")), searchTerm);
+                Predicate descPredicate = criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("description")), searchTerm);
+                Predicate assigneePredicate = criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("assignee")), searchTerm);
+                predicates.add(criteriaBuilder.or(titlePredicate, descPredicate, assigneePredicate));
+            }
+            
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+        
+        Page<Task> taskPage = taskRepository.findAll(spec, pageable);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("tasks", taskPage.getContent().stream()
             .map(TaskResponse::fromEntity)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
+        response.put("currentPage", taskPage.getNumber());
+        response.put("totalItems", taskPage.getTotalElements());
+        response.put("totalPages", taskPage.getTotalPages());
+        
+        return response;
     }
     
     @Transactional(readOnly = true)
@@ -66,8 +93,8 @@ public class TaskService {
     }
     
     @Transactional(readOnly = true)
-    public List<TaskResponse> getTasksByAssignee(String assigneeName) {
-        return taskRepository.findByAssigneeNameIgnoreCase(assigneeName).stream()
+    public List<TaskResponse> getTasksByAssignee(String assignee) {
+        return taskRepository.findByAssigneeIgnoreCase(assignee).stream()
             .map(TaskResponse::fromEntity)
             .collect(Collectors.toList());
     }
@@ -87,12 +114,33 @@ public class TaskService {
     }
     
     private void updateTaskFromRequest(Task task, TaskRequest request) {
-        task.setTitle(request.getTitle() == null ? truncate(request.getDescription(), 500) : request.getTitle());
-        task.setDescription(request.getDescription());
-        task.setAssigneeName(request.getAssigneeName());
-        task.setDueDate(request.getDueDate());
-        task.setStatus(request.getStatus().toUpperCase());
-        task.setPriority(request.getPriority().toUpperCase());
+        if (request.getTitle() != null) {
+            task.setTitle(truncate(request.getTitle(), 500));
+        } else if (request.getDescription() != null) {
+            task.setTitle(truncate(request.getDescription(), 500));
+        }
+        
+        if (request.getDescription() != null) {
+            task.setDescription(request.getDescription());
+        }
+        
+        if (request.getAssignee() != null) {
+            task.setAssignee(request.getAssignee());
+        }
+        
+        if (request.getDueDate() != null) {
+            task.setDueDate(request.getDueDate());
+        }
+        
+        if (request.getStatus() != null) {
+            task.setStatus(request.getStatus().toUpperCase());
+        }
+        
+        if (request.getPriority() != null) {
+            task.setPriority(request.getPriority().toUpperCase());
+        } else {
+            task.setPriority("P3"); // Default priority
+        }
     }
     
     private String truncate(String value, int maxLength) {

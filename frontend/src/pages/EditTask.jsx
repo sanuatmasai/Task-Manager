@@ -21,7 +21,7 @@ export default function EditTask() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    assigneeName: '',
+    assignee: '',
     dueDate: '',
     priority: 'P3',
     status: 'PENDING'
@@ -39,7 +39,7 @@ export default function EditTask() {
         setFormData({
           title: task.title || '',
           description: task.description || '',
-          assigneeName: task.assigneeName || '',
+          assignee: task.assignee || '',
           dueDate: dueDate,
           priority: task.priority || 'P3',
           status: task.status || 'PENDING'
@@ -227,16 +227,16 @@ export default function EditTask() {
             {/* Assignee & Due Date */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="space-y-2">
-                <label htmlFor="assigneeName" className="block text-sm font-medium text-gray-700 flex items-center">
+                <label htmlFor="assignee" className="block text-sm font-medium text-gray-700 flex items-center">
                   <UserCircleIcon className="h-4 w-4 mr-1.5 text-gray-400" />
                   Assignee
                 </label>
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
                     type="text"
-                    name="assigneeName"
-                    id="assigneeName"
-                    value={formData.assigneeName}
+                    name="assignee"
+                    id="assignee"
+                    value={formData.assignee}
                     onChange={handleChange}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3.5 border"
                     placeholder="Unassigned"

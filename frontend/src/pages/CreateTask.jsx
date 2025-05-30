@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { taskService } from '../services/api';
 import { toast } from '../utils/toast';
+import MeetingMinutesParser from '../components/MeetingMinutesParser';
 
 export default function CreateTask() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('natural');
+  const [activeTab, setActiveTab] = useState('meeting');
   const navigate = useNavigate();
 
   // Form state for manual entry
@@ -105,7 +106,7 @@ export default function CreateTask() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto py-6  ">
       <div className="mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -121,26 +122,32 @@ export default function CreateTask() {
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex">
             <button
+              onClick={() => setActiveTab('meeting')}
+              className={`${activeTab === 'meeting' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
+            >
+              Meeting Minutes
+            </button>
+            <button
               onClick={() => setActiveTab('natural')}
-              className={`${activeTab === 'natural' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm`}
+              className={`${activeTab === 'natural' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
             >
               Natural Language
             </button>
             <button
               onClick={() => setActiveTab('form')}
-              className={`${activeTab === 'form' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm`}
+              className={`${activeTab === 'form' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
             >
               Manual Entry
             </button>
           </nav>
         </div>
 
-        <div className="p-6">
+        <div className="px-4 py-5 sm:p-6">
           {error && (
-            <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
+            <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-400">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
@@ -151,7 +158,11 @@ export default function CreateTask() {
             </div>
           )}
 
-          {activeTab === 'natural' ? (
+          {activeTab === 'meeting' ? (
+            <MeetingMinutesParser 
+              onTasksCreated={() => navigate('/tasks')} 
+            />
+          ) : activeTab === 'natural' ? (
             <form onSubmit={handleNaturalSubmit}>
               <div>
                 <label htmlFor="taskInput" className="block text-sm font-medium text-gray-700">

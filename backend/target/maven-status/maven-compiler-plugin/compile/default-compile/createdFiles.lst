@@ -1,11 +1,13 @@
 com\taskmanager\dto\TaskResponse.class
 com\taskmanager\repository\TaskRepository.class
+com\taskmanager\service\NLParserService.class
+com\taskmanager\controller\TaskController.class
+com\taskmanager\dto\MeetingMinutesRequest.class
+com\taskmanager\TaskManagerApplication.class
 com\taskmanager\dto\TaskRequest.class
+com\taskmanager\service\GeminiService.class
 com\taskmanager\config\WebConfig.class
 com\taskmanager\exception\GlobalExceptionHandler.class
 com\taskmanager\service\TaskService.class
-com\taskmanager\service\NLParserService.class
 com\taskmanager\config\OpenAPIConfig.class
 com\taskmanager\model\Task.class
-com\taskmanager\controller\TaskController.class
-com\taskmanager\TaskManagerApplication.class

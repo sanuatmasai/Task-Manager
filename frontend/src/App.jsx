@@ -17,7 +17,7 @@ function App() {
     <div className="flex flex-col min-h-screen w-full bg-gray-50">
       <ToastProvider />
       {/* Navigation */}
-      <nav className="bg-white shadow-sm w-full">
+      <nav className="bg-white shadow-sm w-full sticky top-0 z-50">
         <div className="w-full px-4">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -64,8 +64,8 @@ function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 w-full">
-        <div className="w-full px-4 py-6">
+      <main className="flex-1  w-full">
+        <div className="w-full px-4 ">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/tasks" element={<TaskList />} />
