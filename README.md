@@ -18,32 +18,27 @@ A modern, full-stack task management application built with React, Spring Boot, 
   <div>
     <h3>1. Dashboard</h3>
     <p><em>Add screenshot of the main dashboard here</em></p>
-    ![Dashboard](screenshots/dashboard.png)
+    ![Dashboard](screenshots/img1.png)
+    ![Dashboard](screenshots/img2.png)
   </div>
   <div>
     <h3>2. Task List</h3>
     <p><em>Add screenshot of the task list view here</em></p>
-    ![Task List](screenshots/task-list.png)
+    ![Task List](screenshots/img3.png)
+    ![Task List](screenshots/img4.png)
   </div>
   <div>
     <h3>3. Create Task</h3>
     <p><em>Add screenshot of the task creation form here</em></p>
-    ![Create Task](screenshots/create-task.png)
+    ![Create Task](screenshots/img5.png)
+    ![Create Task](screenshots/img6.png)
   </div>
   <div>
     <h3>4. Task Details</h3>
     <p><em>Add screenshot of task details view here</em></p>
-    ![Task Details](screenshots/task-details.png)
-  </div>
-  <div>
-    <h3>5. Mobile View</h3>
-    <p><em>Add screenshot of mobile responsive view here</em></p>
-    ![Mobile View](screenshots/mobile-view.png)
-  </div>
-  <div>
-    <h3>6. Search & Filter</h3>
-    <p><em>Add screenshot of search and filter functionality here</em></p>
-    ![Search](screenshots/search-filter.png)
+    ![Task Details](screenshots/img7.png)
+    ![Task Details](screenshots/img8.png)
+    ![Task Details](screenshots/img9.png)
   </div>
 </div>
 
