@@ -16,29 +16,17 @@ A modern, full-stack task management application built with React, Spring Boot, 
 <!-- Add your screenshots here -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0;">
   <div>
-    <h3>1. Dashboard</h3>
-    <p><em>Add screenshot of the main dashboard here</em></p>
-    ![Dashboard](screenshots/img1.png)
-    ![Dashboard](screenshots/img2.png)
-  </div>
-  <div>
-    <h3>2. Task List</h3>
-    <p><em>Add screenshot of the task list view here</em></p>
-    ![Task List](screenshots/img3.png)
-    ![Task List](screenshots/img4.png)
-  </div>
-  <div>
-    <h3>3. Create Task</h3>
-    <p><em>Add screenshot of the task creation form here</em></p>
-    ![Create Task](screenshots/img5.png)
-    ![Create Task](screenshots/img6.png)
-  </div>
-  <div>
-    <h3>4. Task Details</h3>
-    <p><em>Add screenshot of task details view here</em></p>
-    ![Task Details](screenshots/img7.png)
-    ![Task Details](screenshots/img8.png)
-    ![Task Details](screenshots/img9.png)
+    <h3>1. Preview</h3>
+    <p><em>Add screenshot of the applicatione</em></p>
+    <img src = "./screenshots/img1.png"/>
+    <img src = "./screenshots/img2.png"/>
+    <img src = "./screenshots/img3.png"/>
+    <img src = "./screenshots/img4.png"/>
+    <img src = "./screenshots/img5.png"/>
+    <img src = "./screenshots/img6.png"/>
+    <img src = "./screenshots/img7.png"/>
+    <img src = "./screenshots/img8.png"/>
+    <img src = "./screenshots/img9.png"/>
   </div>
 </div>
 
